@@ -16,7 +16,6 @@ Paper 1.21.4 기반 인생약탈 PVP 서버 구성입니다. 저장소 구조는
 
 | 플러그인 | 버전 | jar |
 | --- | --- | --- |
-| ChunkLand | 0.5.7 | `chunkland-0.5.7.jar` |
 | Citizens | 2.0.37-SNAPSHOT build 3762 | `Citizens-2.0.37-b3762.jar` |
 | ClearLag | 3.2.2 | `Clearlag2.jar` |
 | CommandPrivacy | 1.0.0 | `CommandPrivacy-1.0.0.jar` |
