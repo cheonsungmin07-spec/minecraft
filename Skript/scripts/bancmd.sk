@@ -1,4 +1,0 @@
-on command:
-    if player is not op:
-        if command is "pl" or "plugins" or "bukkit:pl" or "bukkit:plugins" or "ver" or "version" or "?" or "help":
-            cancel event

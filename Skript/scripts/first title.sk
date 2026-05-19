@@ -1,9 +1,0 @@
-on first join:
-    wait 10 ticks
-    send title "&6&l환영합니다" with subtitle "&e청주대학교 마크 서버에 오신 것을 환영합니다!" to player for 4 seconds
-    play sound "entity.player.levelup" with volume 1 and pitch 1 to player
-    send "&e━━━━━━━━━━━━━━━━━━━━" to player
-    send "&6&l환영합니다!"
-    send "&f청주대학교 마크 서버에 처음 오셨습니다."
-    send "&f/메뉴 또는 F키+쉬프트로 메뉴를 열 수 있습니다."
-    send "&e━━━━━━━━━━━━━━━━━━━━" to player

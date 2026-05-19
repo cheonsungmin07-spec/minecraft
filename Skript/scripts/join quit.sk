@@ -1,5 +1,0 @@
-on join:
-    set join message to "&8[&a+&8] &e%player% &f님이 서버에 접속했습니다."
-
-on quit:
-    set quit message to "&8[&c-&8] &e%player% &f님이 서버에서 나갔습니다."
