@@ -1,0 +1,166 @@
+on death of player:
+    add 1 to {deaths::%uuid of victim%}
+
+    if attacker is a player:
+        add 1 to {kills::%uuid of attacker%}
+
+command /스폰:
+    trigger:
+        if {스폰쿨타임::%uuid of player%} is set:
+            if {스폰쿨타임::%uuid of player%} > now:
+                send "&c아직 쿨타임 남음! %difference between now and {스폰쿨타임::%uuid of player%}% 후에 다시 써라" to player
+                stop
+
+        execute console command "mv tp %player% flatworld"
+        send "&a스폰으로 이동함!" to player
+        set {스폰쿨타임::%uuid of player%} to 8 seconds after now
+
+command /디코:
+	trigger:
+		send formatted "<click:open_url:'https://discord.gg/XhAZR6tb9S'><hover:show_text:'클릭해서 디스코드 참가'><blue><bold>[디스코드]</bold></blue></hover></click> <white>클릭해서 참가하기</white>" to player
+
+command /디스코드:
+	trigger:
+		send formatted "<click:open_url:'https://discord.gg/XhAZR6tb9S'><hover:show_text:'클릭해서 디스코드 참가'><blue><bold>[디스코드]</bold></blue></hover></click> <white>클릭해서 참가하기</white>" to player
+
+on command:
+    if command is "땅":
+        if player is in region "spawn":
+            send "&c스폰 지역에서는 땅 명령어를 사용할 수 없습니다."
+            cancel event
+
+command /수리:
+    trigger:
+        if player's tool is air:
+            send "&c손에 아이템을 들고 있어야 함!" to player
+            stop
+
+        repair player's tool
+        send "&a아이템 내구도가 수리됨!" to player
+
+command /규칙:
+    trigger:
+        send formatted "<click:open_url:'https://loving-cayenne-cc7.notion.site/35a3bd60186e80f2a02bd5fece3bedf3'><hover:show_text:'클릭해서 규칙 보기'><gold><bold>[규칙]</bold></gold></hover></click> <white>클릭해서 보러가기</white>" to player
+
+options:
+    wild_world: www
+    wild_min: -5000
+    wild_max: 5000
+    wild_cooldown: 300 seconds
+    wild_wait: 5
+    wild_near_player: 100
+
+command /야생:
+    trigger:
+        execute player command "야생가기"
+
+command /야생가기:
+    trigger:
+        if {wild.cooldown.%uuid of player%} is set:
+            if difference between now and {wild.cooldown.%uuid of player%} < {@wild_cooldown}:
+                set {_left} to {@wild_cooldown} - difference between now and {wild.cooldown.%uuid of player%}
+                send "&c아직 사용할 수 없습니다. &7남은 시간: %{_left}%" to player
+                stop
+
+        if {combat.%uuid of player%} is set:
+            if difference between now and {combat.%uuid of player%} < 15 seconds:
+                send "&c전투 중에는 야생 이동을 사용할 수 없습니다."
+                stop
+
+        send "&a야생 좌표를 찾는 중입니다..."
+        set {_found} to false
+
+        loop 40 times:
+            set {_x} to random integer between {@wild_min} and {@wild_max}
+            set {_z} to random integer between {@wild_min} and {@wild_max}
+            set {_loc} to location({_x}, 0, {_z}, world("{@wild_world}"))
+            set {_block} to highest block at {_loc}
+            set {_tp} to location(x-coordinate of {_block}, y-coordinate of {_block} + 1, z-coordinate of {_block}, world("{@wild_world}"))
+
+            if type of {_block} is water:
+                continue
+            if type of {_block} is lava:
+                continue
+            if type of {_block} is cactus:
+                continue
+            if type of {_block} is fire:
+                continue
+
+            set {_near} to false
+            loop all players:
+                if loop-player is not player:
+                    if world of loop-player is world("{@wild_world}"):
+                        if distance between loop-player and {_tp} <= {@wild_near_player}:
+                            set {_near} to true
+
+            if {_near} is false:
+                set {_found} to true
+                stop loop
+
+        if {_found} is false:
+            send "&c안전한 야생 좌표를 찾지 못했습니다. 다시 시도해주세요."
+            stop
+
+        send "&e{@wild_wait}초 후 야생으로 이동합니다. &7움직이거나 피해를 받으면 취소됩니다."
+        set {wild.teleporting.%uuid of player%} to true
+        set {_start} to location of player
+
+        loop {@wild_wait} times:
+            wait 1 second
+            if {wild.teleporting.%uuid of player%} is not set:
+                send "&c야생 이동이 취소되었습니다."
+                stop
+            if distance between player and {_start} > 0.5:
+                delete {wild.teleporting.%uuid of player%}
+                send "&c움직여서 야생 이동이 취소되었습니다."
+                stop
+
+        delete {wild.teleporting.%uuid of player%}
+        teleport player to {_tp}
+        set {wild.cooldown.%uuid of player%} to now
+        send "&a야생으로 이동했습니다! &7X: %{_x}% Z: %{_z}%"
+
+on damage:
+    if victim is a player:
+        set {combat.%uuid of victim%} to now
+        if {wild.teleporting.%uuid of victim%} is set:
+            delete {wild.teleporting.%uuid of victim%}
+
+    if attacker is a player:
+        set {combat.%uuid of attacker%} to now
+        if {wild.teleporting.%uuid of attacker%} is set:
+            delete {wild.teleporting.%uuid of attacker%}
+
+on quit:
+    delete {wild.teleporting.%uuid of player%}
+
+command /프로필:
+    trigger:
+        set {_gui} to chest inventory with 3 rows named "&0프로필"
+
+        set {_head} to skull of player
+        set name of {_head} to "&e&l%player%"
+        set lore of {_head} to ""
+        add "&7레벨: &a%level of player%" to lore of {_head}
+        add "&7체력: &c%health of player%❤" to lore of {_head}
+        add "&7배고픔: &6%food level of player%" to lore of {_head}
+        add "&7돈: &e%balance of player%원" to lore of {_head}
+        set {_kills} to {kills::%uuid of player%}
+        set {_deaths} to {deaths::%uuid of player%}
+
+        if {_kills} is not set:
+            set {_kills} to 0
+        if {_deaths} is not set:
+            set {_deaths} to 0
+
+        add "&7킬: &c%{_kills}%" to lore of {_head}
+        add "&7데스: &7%{_deaths}%" to lore of {_head}
+
+        set slot 13 of {_gui} to {_head}
+
+        open {_gui} to player
+
+
+on inventory click:
+    if name of event-inventory is "&0프로필":
+        cancel event

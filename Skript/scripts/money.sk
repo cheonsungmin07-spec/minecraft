@@ -1,0 +1,83 @@
+command /돈 [<text>] [<offlineplayer>] [<number>]:
+    trigger:
+        if arg-1 is not set:
+            send "&e/돈 확인 &7- 내 돈 확인" to player
+            send "&e/돈 보내기 <닉네임> <금액> &7- 돈 보내기" to player
+            send "&e/돈 랭킹 &7- 돈 랭킹 확인" to player
+            if player is op:
+                send "&e/돈 지급 <닉네임> <금액> &7- 돈 지급"
+                send "&e/돈 차감 <닉네임> <금액> &7- 돈 차감"
+                send "&e/돈 설정 <닉네임> <금액> &7- 돈 설정"
+            stop
+
+        if arg-1 is "확인":
+            send "&e현재 돈: &a%player's balance%원" to player
+            stop
+
+        if arg-1 is "보내기":
+            if arg-2 is not set:
+                send "&c사용법: /돈 보내기 <닉네임> <금액>" to player
+                stop
+            if arg-3 is not set:
+                send "&c사용법: /돈 보내기 <닉네임> <금액>" to player
+                stop
+            if arg-2 is player:
+                send "&c자기 자신한테 보내지겠음?" to player
+                stop
+            if arg-3 <= 0:
+                send "&c0원 이하는 보낼 수 없음." to player
+                stop
+            if player's balance < arg-3:
+                send "&c돈이 부족함." to player
+                stop
+
+            remove arg-3 from player's balance
+            add arg-3 to balance of arg-2
+            send "&a%arg-2%님에게 %arg-3%원을 보냄." to player
+            if arg-2 is online:
+                send "&a%player%님에게서 %arg-3%원을 받음." to arg-2
+            stop
+
+        if arg-1 is "지급":
+            if player is not op:
+                send "&c관리자만 사용 가능함." to player
+                stop
+            if arg-2 is not set:
+                send "&c사용법: /돈 지급 <닉네임> <금액>" to player
+                stop
+            if arg-3 is not set:
+                send "&c사용법: /돈 지급 <닉네임> <금액>" to player
+                stop
+            add arg-3 to balance of arg-2
+            send "&a%arg-2%님에게 %arg-3%원을 지급함." to player
+            stop
+
+        if arg-1 is "차감":
+            if player is not op:
+                send "&c관리자만 사용 가능함." to player
+                stop
+            if arg-2 is not set:
+                send "&c사용법: /돈 차감 <닉네임> <금액>" to player
+                stop
+            if arg-3 is not set:
+                send "&c사용법: /돈 차감 <닉네임> <금액>" to player
+                stop
+            remove arg-3 from balance of arg-2
+            send "&c%arg-2%님에게서 %arg-3%원을 차감함." to player
+            stop
+
+        if arg-1 is "설정":
+            if player is not op:
+                send "&c관리자만 사용 가능함." to player
+                stop
+            if arg-2 is not set:
+                send "&c사용법: /돈 설정 <닉네임> <금액>" to player
+                stop
+            if arg-3 is not set:
+                send "&c사용법: /돈 설정 <닉네임> <금액>" to player
+                stop
+            set balance of arg-2 to arg-3
+            send "&a%arg-2%님의 돈을 %arg-3%원으로 설정함." to player
+            stop
+
+        send "&c없는 항목임. /돈 입력해서 확인해봐." to player

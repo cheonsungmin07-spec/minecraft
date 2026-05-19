@@ -1,0 +1,45 @@
+command /메뉴:
+    trigger:
+        set {_gui} to chest inventory with 3 rows named "&0메뉴"
+
+        set slot 10 of {_gui} to emerald named "&a&l상점" with lore "&7클릭하면 상점을 엽니다."
+        set slot 12 of {_gui} to grass block named "&2&l야생" with lore "&7클릭하면 야생 월드로 이동합니다."
+        set slot 14 of {_gui} to compass named "&b&l스폰" with lore "&7클릭하면 스폰으로 이동합니다."
+        set {_head} to skull of player
+        set name of {_head} to "&e&l프로필"
+        set lore of {_head} to "&7내 정보를 확인합니다."
+
+        set slot 16 of {_gui} to {_head}
+
+        open {_gui} to player
+
+on swap hand items:
+    if player is sneaking:
+        cancel event
+        wait 1 tick
+        execute player command "메뉴"
+
+
+on inventory click:
+    if name of event-inventory is "&0메뉴":
+        cancel event
+
+        if clicked inventory is player's inventory:
+            stop
+
+        if clicked slot is 10:
+            close player's inventory
+            execute player command "상점보기"
+
+        if clicked slot is 12:
+            close player's inventory
+            execute player command "야생"
+
+        if clicked slot is 14:
+            close player's inventory
+            execute player command "스폰"
+
+        if clicked slot is 16:
+            close player's inventory
+            execute player command "프로필"
+

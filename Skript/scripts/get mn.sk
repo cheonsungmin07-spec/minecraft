@@ -1,0 +1,8 @@
+every 1 minute:
+    loop all players:
+        add 1 to {접속시간::%uuid of loop-player%}
+
+        if {접속시간::%uuid of loop-player%} >= 10:
+            add 1000 to loop-player's balance
+            remove 10 from {접속시간::%uuid of loop-player%}
+            send "&a접속 보상으로 1,000원을 받음!" to loop-player
