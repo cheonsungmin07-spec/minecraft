@@ -1,0 +1,72 @@
+# Players with OP or this permission bypass every filter.
+bypass-permission: commandprivacy.bypass
+
+# Hide commands from the slash/tab command preview for non-bypass players.
+filter-slash-preview: true
+
+# When true, non-bypass players only see commands listed in allowed-preview-commands.
+# When false, only commands listed in hidden-preview-commands are removed.
+preview-allowlist-mode: true
+
+# Commands non-bypass players may see when preview-allowlist-mode is true.
+# Do not include the leading slash.
+allowed-preview-commands:
+  - msg
+  - tell
+  - w
+  - tpa
+  - 스폰
+  - 상점
+  - 수리
+  - 돈
+  - sethome
+  - home
+  - tpacancel
+  - tpdeny
+  - tpaccept
+  - 디코
+  - 디스코드
+  - shop
+  - 돈랭킹
+  - 규칙
+  - 야생
+  - 야생가기
+  - 상점보기
+
+# Commands removed from slash/tab preview when preview-allowlist-mode is false.
+# Plugin-list and Bukkit namespaced commands are included by default.
+hidden-preview-commands:
+  - plugins
+  - pl
+  - bukkit:plugins
+  - bukkit:pl
+  - version
+  - ver
+  - bukkit:version
+  - bukkit:ver
+  - about
+  - bukkit:about
+  - '?'
+  - bukkit:?
+  - help
+  - bukkit:help
+
+# Actually block command execution for non-bypass players.
+block-commands: true
+
+# Commands non-bypass players cannot execute even if they type them manually.
+blocked-commands:
+  - plugins
+  - pl
+  - bukkit:plugins
+  - bukkit:pl
+  - version
+  - ver
+  - bukkit:version
+  - bukkit:ver
+  - about
+  - bukkit:about
+  - icanhasbukkit
+  - bukkit:icanhasbukkit
+
+blocked-message: "&cYou do not have permission to use that command."

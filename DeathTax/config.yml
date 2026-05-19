@@ -1,0 +1,10 @@
+money-loss:
+  enabled: true
+  min-percent: 5
+  max-percent: 10
+  pay-killer: true
+  message-player: '&c사망 패널티: 보유 돈의 &e{percent}%&c, &e{amount}&c원을 잃었습니다.'
+  message-killer: '&a처치 보상: &e{amount}&a원을 얻었습니다.'
+
+messages:
+  reload: '&aDeathTax 설정을 다시 불러왔습니다.'
